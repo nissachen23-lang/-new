@@ -1,23 +1,23 @@
 #!/usr/bin/env bash
-# GEO 支付页面 — 服务器部署脚本
-# 用法: ./deploy.sh [服务器IP] [SSH端口]
-# 示例: ./deploy.sh 124.220.78.14 22
-
 set -euo pipefail
-
-SERVER_HOST="${1:-124.220.78.14}"
-SERVER_PORT="${2:-22}"
-SERVER_USER="root"
-DEPLOY_PATH="/www/wwwroot/rong"
-
+CONFIG_FILE="$(dirname "$0")/deploy.config.json"
+SERVER_HOST=$(python3 -c "import json; print(json.load(open('$CONFIG_FILE'))['host'])")
+SERVER_PORT=$(python3 -c "import json; print(json.load(open('$CONFIG_FILE'))['port'])")
+SERVER_USER=$(python3 -c "import json; print(json.load(open('$CONFIG_FILE'))['user'])")
+DEPLOY_PATH=$(python3 -c "import json; print(json.load(open('$CONFIG_FILE'))['path'])")
+PREVIEW_URL=$(python3 -c "import json; print(json.load(open('$CONFIG_FILE'))['previewUrl'])")
 echo "==> 构建生产包..."
 npm ci
 npm run build
-
 echo "==> 部署到 ${SERVER_USER}@${SERVER_HOST}:${DEPLOY_PATH}"
-rsync -avz --delete \
-  -e "ssh -p ${SERVER_PORT}" \
-  dist/ "${SERVER_USER}@${SERVER_HOST}:${DEPLOY_PATH}/"
-
-echo "==> 部署完成！"
-echo "    访问路径取决于 Nginx 站点配置（通常为 /www/wwwroot/rong 对应域名）"
+if [ -z "${SSHPASS:-}" ]; then
+  rsync -avz --delete -e "ssh -p ${SERVER_PORT}" dist/ "${SERVER_USER}@${SERVER_HOST}:${DEPLOY_PATH}/"
+else
+  sshpass -e rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no -p ${SERVER_PORT}" dist/ "${SERVER_USER}@${SERVER_HOST}:${DEPLOY_PATH}/"
+fi
+echo ""
+echo "=========================================="
+echo "  部署成功！"
+echo "  预览地址: ${PREVIEW_URL}"
+echo "  部署路径: ${DEPLOY_PATH}"
+echo "=========================================="
