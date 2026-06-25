@@ -12,6 +12,7 @@ on:
       - 'package-lock.json'
       - 'vite.config.js'
       - 'deploy.config.json'
+      - 'scripts/sync-server.sh'
       - '.github/workflows/deploy-server.yml'
   workflow_dispatch:
 
@@ -51,16 +52,12 @@ jobs:
         run: |
           sshpass -e ssh -o StrictHostKeyChecking=no -p "$SSH_PORT" \
             "$SSH_USER@$SSH_HOST" "mkdir -p $DEPLOY_PATH"
-          sshpass -e rsync -avz --delete \
-            -e "ssh -o StrictHostKeyChecking=no -p $SSH_PORT" \
-            dist/ "$SSH_USER@$SSH_HOST:$DEPLOY_PATH/"
+          cd dist && tar czf - . | sshpass -e ssh -o StrictHostKeyChecking=no -p "$SSH_PORT" \
+            "$SSH_USER@$SSH_HOST" "cd $DEPLOY_PATH && tar xzf -"
 
       - name: Output preview URL
         run: |
           URL="${{ secrets.PREVIEW_URL }}"
           if [ -z "$URL" ]; then URL="http://124.220.78.14"; fi
           echo "## 部署成功" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
           echo "**预览地址：** [$URL]($URL)" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "部署路径：\`${{ secrets.DEPLOY_PATH }}\`" >> $GITHUB_STEP_SUMMARY

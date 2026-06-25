@@ -1,0 +1,9 @@
+{
+  "autoDeploy": true,
+  "host": "124.220.78.14",
+  "port": 22,
+  "user": "root",
+  "path": "/www/wwwroot/rong",
+  "previewUrl": "http://124.220.78.14",
+  "note": "代码修改完成后运行 npm run deploy 自动同步到服务器"
+}
