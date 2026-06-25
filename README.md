@@ -4,11 +4,16 @@ GEO 智能监测服务的前端支付购买展示页面，包含核心亮点、�
 
 ## 在线预览
 
-部署完成后，访问：
+**预览地址：** https://nissachen23-lang.github.io/-new/
 
-**https://nissachen23-lang.github.io/-new/**
+### 启用步骤（仅需一次）
 
-> 首次启用需在 GitHub 仓库 **Settings → Pages → Build and deployment → Source** 选择 **GitHub Actions**。
+1. 打开仓库 [Settings → Pages](https://github.com/nissachen23-lang/-new/settings/pages)
+2. **Build and deployment → Source** 选择 **Deploy from a branch**
+3. **Branch** 选择 `gh-pages`，文件夹选 `/ (root)`，点击 **Save**
+4. 等待 1～2 分钟，即可通过上方链接访问
+
+> 每次推送到 `main` 分支后，GitHub Actions 会自动构建并更新 `gh-pages` 分支。
 
 ## 功能特性
 
