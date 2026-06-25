@@ -2,6 +2,14 @@
 
 GEO 智能监测服务的前端支付购买展示页面，包含核心亮点、多档位会员方案、权益对比和常见问题模块。
 
+## 在线预览
+
+部署完成后，访问：
+
+**https://nissachen23-lang.github.io/-new/**
+
+> 首次启用需在 GitHub 仓库 **Settings → Pages → Build and deployment → Source** 选择 **GitHub Actions**。
+
 ## 功能特性
 
 - **核心亮点展示** — AI 问题挖掘、GEO 排名、链接检测、无水印报告四大能力
@@ -14,8 +22,9 @@ GEO 智能监测服务的前端支付购买展示页面，包含核心亮点、�
 
 - React 19 + Vite 6
 - Tailwind CSS 4
+- GitHub Pages 自动部署
 
-## 快速开始
+## 本地开发
 
 ```bash
 npm install
